@@ -49,6 +49,17 @@ static int cmpint(const void *a, const void *b)
     return *(int *) a - *(int *) b;
 }
 
+static int cmpint64(const void *a, const void *b)
+{
+    uint64_t a_val = *(uint64_t *) a;
+    uint64_t b_val = *(uint64_t *) b;
+    if (a_val > b_val)
+        return 1;
+    if (a_val == b_val)
+        return 0;
+    return -1;
+}
+
 /** @brief Initialize /dev/xoroshiro128p.
  *  @return Returns 0 if successful.
  */
@@ -155,7 +166,7 @@ static ssize_t dev_read(struct file *filep,
 {
     /* Give at most 8 bytes per read */
     ktime_t kt;
-    int *arr;
+    uint64_t *arr;
 
     arr = kmalloc_array(TEST_LEN, sizeof(*arr), GFP_KERNEL);
     for (size_t i = 0; i < TEST_LEN; ++i) {
@@ -163,11 +174,17 @@ static ssize_t dev_read(struct file *filep,
     }
 
     kt = ktime_get();
-    sort_impl(arr, TEST_LEN, sizeof(*arr), cmpint, NULL);
+    sort_impl(arr, TEST_LEN, sizeof(*arr), cmpint64, NULL);
     kt = ktime_sub(ktime_get(), kt);
     uint64_t times = ktime_to_us(kt);
-    /* copy_to_user has the format ( * to, *from, size) and ret 0 on success */
 
+    for (int i = 0; i < TEST_LEN - 1; i++)
+        if (arr[i] > arr[i + 1]) {
+            pr_err("test has failed\n");
+            break;
+        }
+
+    /* copy_to_user has the format ( * to, *from, size) and ret 0 on success */
     int n_notcopied = copy_to_user(buffer, &times, len);
 
     kfree(arr);
