@@ -44,7 +44,7 @@ static struct file_operations fops = {
 
 #define TEST_LEN 1000
 
-static int __init cmpint(const void *a, const void *b)
+static int cmpint(const void *a, const void *b)
 {
     return *(int *) a - *(int *) b;
 }
@@ -154,20 +154,30 @@ static ssize_t dev_read(struct file *filep,
                         loff_t *offset)
 {
     /* Give at most 8 bytes per read */
-    size_t len_ = (len > 8) ? 8 : len;
+    ktime_t kt;
+    int *arr;
 
-    uint64_t value = next(); /* in xoroshiro128plus.c */
+    arr = kmalloc_array(TEST_LEN, sizeof(*arr), GFP_KERNEL);
+    for (size_t i = 0; i < TEST_LEN; ++i) {
+        arr[i] = next();
+    }
 
+    kt = ktime_get();
+    sort_impl(arr, TEST_LEN, sizeof(*arr), cmpint, NULL);
+    kt = ktime_sub(ktime_get(), kt);
+    uint64_t times = ktime_to_us(kt);
     /* copy_to_user has the format ( * to, *from, size) and ret 0 on success */
-    int n_notcopied = copy_to_user(buffer, (char *) (&value), len_);
 
+    int n_notcopied = copy_to_user(buffer, &times, len);
+
+    kfree(arr);
     if (0 != n_notcopied) {
         printk(KERN_ALERT "XORO: Failed to read %d/%ld bytes\n", n_notcopied,
-               len_);
+               len);
         return -EFAULT;
     }
-    printk(KERN_INFO "XORO: read %ld bytes\n", len_);
-    return len_;
+    printk(KERN_INFO "XORO: read %ld bytes\n", len);
+    return len;
 }
 
 /** @brief Called when the userspace program calls close().
