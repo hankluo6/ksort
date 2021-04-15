@@ -2,10 +2,10 @@ reset
 set ylabel 'time(nsec)'
 set title 'Performance'
 set term png enhanced font 'Verdana,10'
-set output 'runtime5.png'
+set output 'runtime.png'
 set xlabel 'experiment'
 
-plot [][0:1000000] 'out2.txt' using 1 with linespoints linewidth 1 title 'kernel heap sort', \
+plot [][] 'out.txt' using 1 with linespoints linewidth 1 title 'kernel heap sort', \
 '' using 2 with linespoints linewidth 1 title 'merge sort', \
 '' using 3 with linespoints linewidth 1 title 'shell sort', \
 '' using 4 with linespoints linewidth 1 title 'binary insertion sort', \
