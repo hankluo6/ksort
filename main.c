@@ -284,7 +284,7 @@ static ssize_t dev_read(struct file *filep,
     times[8] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in bubble sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
@@ -296,7 +296,7 @@ static ssize_t dev_read(struct file *filep,
     times[9] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in bitonic sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
@@ -308,7 +308,7 @@ static ssize_t dev_read(struct file *filep,
     times[10] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in merge sort in place\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
@@ -320,7 +320,7 @@ static ssize_t dev_read(struct file *filep,
     times[11] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in grail sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
@@ -332,7 +332,7 @@ static ssize_t dev_read(struct file *filep,
     times[12] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in sqrt sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
@@ -344,7 +344,7 @@ static ssize_t dev_read(struct file *filep,
     times[13] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in rec stable sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
@@ -356,7 +356,7 @@ static ssize_t dev_read(struct file *filep,
     times[14] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr[i] > arr[i + 1]) {
-            pr_err("test has failed in tim sort\n");
+            pr_err("test has failed in grail sort dyn buffer\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
