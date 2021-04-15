@@ -181,181 +181,181 @@ static ssize_t dev_read(struct file *filep,
     }
 
     /* kernel heap sort */
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    sort_impl(arr, TEST_LEN, sizeof(*arr), cmpint64, NULL);
+    sort_impl(arr_copy, TEST_LEN, sizeof(*arr_copy), cmpint64, NULL);
     kt = ktime_sub(ktime_get(), kt);
     times[0] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in kernel heap sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_merge_sort(arr, TEST_LEN);
+    ksort_merge_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[1] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in merge sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_shell_sort(arr, TEST_LEN);
+    ksort_shell_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[2] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in shell sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_binary_insertion_sort(arr, TEST_LEN);
+    ksort_binary_insertion_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[3] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in binary insertion sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_heap_sort(arr, TEST_LEN);
+    ksort_heap_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[4] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in heap sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_quick_sort(arr, TEST_LEN);
+    ksort_quick_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[5] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in quick sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_selection_sort(arr, TEST_LEN);
+    ksort_selection_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[6] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in selection sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_tim_sort(arr, TEST_LEN);
+    ksort_tim_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[7] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in tim sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_bubble_sort(arr, TEST_LEN);
+    ksort_bubble_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[8] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in bubble sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_bitonic_sort(arr, TEST_LEN);
+    ksort_bitonic_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[9] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in bitonic sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_merge_sort_in_place(arr, TEST_LEN);
+    ksort_merge_sort_in_place(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[10] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in merge sort in place\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_grail_sort(arr, TEST_LEN);
+    ksort_grail_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[11] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in grail sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_sqrt_sort(arr, TEST_LEN);
+    ksort_sqrt_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[12] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in sqrt sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_rec_stable_sort(arr, TEST_LEN);
+    ksort_rec_stable_sort(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[13] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in rec stable sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
 
-    memcpy(arr, arr_copy, sizeof(uint64_t) * TEST_LEN);
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    ksort_grail_sort_dyn_buffer(arr, TEST_LEN);
+    ksort_grail_sort_dyn_buffer(arr_copy, TEST_LEN);
     kt = ktime_sub(ktime_get(), kt);
     times[14] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
-        if (arr[i] > arr[i + 1]) {
+        if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in grail sort dyn buffer\n");
             break;
         }
