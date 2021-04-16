@@ -8,13 +8,13 @@
 
 #define XORO_DEV "/dev/xoroshiro128p"
 
-#define TEST_TIME 1000000
+#define TEST_TIME 1
 #define EXPERIMENT 100
 
 int main()
 {
-    uint64_t buf[15] = {0};
-    uint64_t times[EXPERIMENT][15] = {0};
+    uint64_t buf[16] = {0};
+    uint64_t times[EXPERIMENT][16] = {0};
     char *names[] = {"kernel_heap_sort",
                      "merge_sort",
                      "shell_sort",
@@ -29,7 +29,8 @@ int main()
                      "grail_sort",
                      "sqrt_sort",
                      "rec_stable_sort",
-                     "grail_sort_dyn_buffer"};
+                     "grail_sort_dyn_buffer",
+                     "intro_sort"};
 
     int fd = open(XORO_DEV, O_RDWR);
     if (fd < 0) {
@@ -37,17 +38,17 @@ int main()
         exit(1);
     }
     for (int e = 0; e < EXPERIMENT; ++e) {
-        read(fd, &buf, sizeof(buf));
         for (int t = 0; t < TEST_TIME; ++t) {
-            for (int i = 0; i < 15; i++) {
+            read(fd, &buf, sizeof(buf));
+            for (int i = 0; i < 16; i++) {
                 times[e][i] += buf[i];
             }
         }
-        for (int i = 0; i < 15; ++i)
+        for (int i = 0; i < 16; ++i)
             times[e][i] /= TEST_TIME;
     }
     for (int e = 0; e < EXPERIMENT; ++e) {
-        for (int i = 0; i < 15; ++i) {
+        for (int i = 0; i < 16; ++i) {
             printf("%lu ", times[e][i]);
         }
         printf("\n");

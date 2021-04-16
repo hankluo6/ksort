@@ -105,7 +105,7 @@ static int __init xoro_init(void)
         a[i] = r;
     }
 
-    sort_impl(a, TEST_LEN, sizeof(*a), cmpint, NULL);
+    sort_heap(a, TEST_LEN, sizeof(*a), cmpint, NULL);
 
     err = -EINVAL;
     for (i = 0; i < TEST_LEN - 1; i++)
@@ -171,7 +171,7 @@ static ssize_t dev_read(struct file *filep,
     /* Give at most 8 bytes per read */
     ktime_t kt;
     uint64_t *arr, *arr_copy;
-    uint64_t times[15];
+    uint64_t times[16];
 
     arr = kmalloc_array(TEST_LEN, sizeof(*arr), GFP_KERNEL);
     arr_copy = kmalloc_array(TEST_LEN, sizeof(*arr_copy), GFP_KERNEL);
@@ -183,7 +183,7 @@ static ssize_t dev_read(struct file *filep,
     /* kernel heap sort */
     memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
     kt = ktime_get();
-    sort_impl(arr_copy, TEST_LEN, sizeof(*arr_copy), cmpint64, NULL);
+    sort_heap(arr_copy, TEST_LEN, sizeof(*arr_copy), cmpint64, NULL);
     kt = ktime_sub(ktime_get(), kt);
     times[0] = ktime_to_ns(kt);
     for (int i = 0; i < TEST_LEN - 1; i++)
@@ -357,6 +357,18 @@ static ssize_t dev_read(struct file *filep,
     for (int i = 0; i < TEST_LEN - 1; i++)
         if (arr_copy[i] > arr_copy[i + 1]) {
             pr_err("test has failed in grail sort dyn buffer\n");
+            break;
+        }
+    printk(KERN_INFO "%llu\n", ktime_to_ns(kt));
+
+    memcpy(arr_copy, arr, sizeof(uint64_t) * TEST_LEN);
+    kt = ktime_get();
+    sort_intro(arr_copy, TEST_LEN, sizeof(*arr_copy), cmpint64, 0);
+    kt = ktime_sub(ktime_get(), kt);
+    times[15] = ktime_to_ns(kt);
+    for (int i = 0; i < TEST_LEN - 1; i++)
+        if (arr_copy[i] > arr_copy[i + 1]) {
+            pr_err("test has failed in intro1 sort\n");
             break;
         }
     printk(KERN_INFO "%llu\n", ktime_to_ns(kt));

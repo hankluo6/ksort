@@ -275,7 +275,7 @@ static void sort_r(void *_base,
     }
 }
 
-void sort_impl(void *base,
+void sort_heap(void *base,
                size_t num,
                size_t size,
                cmp_func_t cmp_func,

@@ -19,4 +19,5 @@ plot [][] 'out.txt' using 1 with linespoints linewidth 1 title 'kernel heap sort
 '' using 12 with linespoints linewidth 1 title 'grail sort', \
 '' using 13 with linespoints linewidth 1 title 'sqrt sort', \
 '' using 14 with linespoints linewidth 1 title 'rec stable sort', \
-'' using 15 with linespoints linewidth 1 title 'grail sort dyn buffer'
+'' using 15 with linespoints linewidth 1 title 'grail sort dyn buffer', \
+'' using 16 with linespoints linewidth 1 title 'intro sort'

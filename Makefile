@@ -4,7 +4,8 @@ TARGET_MODULE := ksort
 obj-m := $(TARGET_MODULE).o
 ksort-objs := \
 	xoroshiro128plus.o \
-	heap.o \
+	heap.o  \
+	intro.o \
 	main.o
 
 ccflags-y := -std=gnu99 -Wno-declaration-after-statement
