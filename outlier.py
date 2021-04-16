@@ -5,10 +5,8 @@ def outlier_filter(datas, threshold = 1):
     z = np.abs((datas - datas.mean(axis = 0)) / datas.std(axis = 0))
     m = datas.mean(axis = 0)
     
-    m = sorted(m)
     for i in m:
         print("{:.0f}".format(i))
-
 
     # TODO: maybe use numpy function
     for i in range(z.shape[0]):
