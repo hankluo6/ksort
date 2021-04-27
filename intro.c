@@ -142,11 +142,12 @@ void sort_intro(void *base,
     const int max_depth = __log2(num) << 1;
 
     /* Temporary storage used by both heapsort and shellsort */
-    char *tmp = kmalloc_array(num, sizeof(*tmp), GFP_KERNEL);
+    char *tmp = kmalloc(size, GFP_KERNEL);
 
     if (num > 16) {
         char *low = array, *high = array + idx(num - 1);
-        stack_node_t *stack = kmalloc_array(num, sizeof(*stack), GFP_KERNEL);
+        stack_node_t *stack =
+            kmalloc_array(STACK_SIZE, sizeof(*stack), GFP_KERNEL);
         stack_node_t *top = stack + 1;
 
         int depth = 0;
