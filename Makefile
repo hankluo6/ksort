@@ -6,9 +6,10 @@ ksort-objs := \
 	xoroshiro128plus.o \
 	heap.o  \
 	intro.o \
+	pdqsort.o \
 	main.o
 
-ccflags-y := -std=gnu99 -Wno-declaration-after-statement
+ccflags-y := -O2 -std=gnu99 -Wno-declaration-after-statement
 
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)

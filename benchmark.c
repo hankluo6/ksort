@@ -13,8 +13,8 @@
 
 int main()
 {
-    uint64_t buf[16] = {0};
-    uint64_t times[EXPERIMENT][16] = {0};
+    uint64_t buf[17] = {0};
+    uint64_t times[EXPERIMENT][17] = {0};
     char *names[] = {"kernel_heap_sort",
                      "merge_sort",
                      "shell_sort",
@@ -30,7 +30,9 @@ int main()
                      "sqrt_sort",
                      "rec_stable_sort",
                      "grail_sort_dyn_buffer",
-                     "intro_sort"};
+                     "intro_sort",
+                     "pdquick_sort"};
+
 
     int fd = open(XORO_DEV, O_RDWR);
     if (fd < 0) {
@@ -40,15 +42,15 @@ int main()
     for (int e = 0; e < EXPERIMENT; ++e) {
         for (int t = 0; t < TEST_TIME; ++t) {
             read(fd, &buf, sizeof(buf));
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 17; i++) {
                 times[e][i] += buf[i];
             }
         }
-        for (int i = 0; i < 16; ++i)
+        for (int i = 0; i < 17; ++i)
             times[e][i] /= TEST_TIME;
     }
     for (int e = 0; e < EXPERIMENT; ++e) {
-        for (int i = 0; i < 16; ++i) {
+        for (int i = 0; i < 17; ++i) {
             printf("%lu ", times[e][i]);
         }
         printf("\n");

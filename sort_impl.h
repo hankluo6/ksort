@@ -18,4 +18,10 @@ extern void sort_intro(void *_array,
                        cmp_func_t comparator,
                        swap_func_t swap_func);
 
+extern void sort_pdqsort(void *base,
+                         size_t num,
+                         size_t size,
+                         cmp_func_t cmp_func,
+                         swap_func_t swap_func);
+
 #endif

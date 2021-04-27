@@ -6,6 +6,7 @@ set output 'runtime.png'
 set xlabel 'experiment'
 
 plot [][] 'out.txt' using 1 with linespoints linewidth 1 title 'kernel heap sort', \
+'out.txt' using 16 with linespoints linewidth 1 title 'introspective sort', \
 '' using 2 with linespoints linewidth 1 title 'merge sort', \
 '' using 3 with linespoints linewidth 1 title 'shell sort', \
 '' using 4 with linespoints linewidth 1 title 'binary insertion sort', \
@@ -20,4 +21,5 @@ plot [][] 'out.txt' using 1 with linespoints linewidth 1 title 'kernel heap sort
 '' using 13 with linespoints linewidth 1 title 'sqrt sort', \
 '' using 14 with linespoints linewidth 1 title 'rec stable sort', \
 '' using 15 with linespoints linewidth 1 title 'grail sort dyn buffer', \
-'' using 16 with linespoints linewidth 1 title 'intro sort'
+'' using 16 with linespoints linewidth 1 title 'intro sort', \
+'' using 17 with linespoints linewidth 1 title 'pattern-defeating quicksort'
