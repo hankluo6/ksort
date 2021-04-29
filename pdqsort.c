@@ -15,6 +15,7 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
+#include <linux/compiler.h>
 #include <linux/limits.h>
 #include <linux/slab.h>
 #include <linux/types.h>
@@ -569,7 +570,7 @@ static void pdqsort_loop(void *_begin,
         size_t r_size = (end - (pivot + idx(1))) / size;
         bool highly_unbalanced = l_size < num / 8 || r_size < num / 8;
 
-        if (highly_unbalanced) {
+        if (likely(highly_unbalanced)) {
             if (--max_depth == 0) {
                 size_t part_length = (size_t)((end - begin) / size);
                 if (part_length > 0) {
