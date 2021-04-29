@@ -36,6 +36,17 @@ static inline int __log2(size_t x)
     return 63 - __builtin_clzll(x);
 }
 
+static int cmpint64(const void *a, const void *b)
+{
+    uint64_t a_val = *(uint64_t *) a;
+    uint64_t b_val = *(uint64_t *) b;
+    if (a_val > b_val)
+        return 1;
+    if (a_val == b_val)
+        return 0;
+    return -1;
+}
+
 /**
  * swap_words_32 - swap two elements in 32-bit chunks
  * @a: pointer to the first element to swap
@@ -123,8 +134,10 @@ static void swap_bytes(void *a, void *b, size_t n)
 #define SWAP_WORDS_32 (swap_func_t) 1
 #define SWAP_BYTES (swap_func_t) 2
 
+#if 0
 #define BLOCK_SIZE 64
 #define CACHELINE_SIZE 64
+#endif
 
 /*
  * The function pointer is last to make tail calls most efficient if the
@@ -242,6 +255,8 @@ static void sort3(void *a, void *b, void *c, size_t size, cmp_func_t cmp_func)
     sort2(b, c, size, cmp_func);
     sort2(a, b, size, cmp_func);
 }
+
+#if 0
 static void swap_offsets(char *first,
                          char *last,
                          size_t size,
@@ -435,8 +450,8 @@ static bool partition_right_branchless(void *_begin,
 
     return first - size;
 }
+#endif
 
-#if 0
 static bool partition_right(void *_begin,
                             void *_end,
                             size_t size,
@@ -475,7 +490,6 @@ static bool partition_right(void *_begin,
 
     return already_partitioned;
 }
-#endif
 
 static char *partition_left(void *_begin,
                             void *_end,
@@ -549,7 +563,7 @@ static void pdqsort_loop(void *_begin,
         }
         char *pivot;
         bool already_partitioned =
-            partition_right_branchless(begin, end, size, cmp_func, &pivot);
+            partition_right(begin, end, size, cmp_func, &pivot);
 
         size_t l_size = (pivot - begin) / size;
         size_t r_size = (end - (pivot + idx(1))) / size;
@@ -565,35 +579,35 @@ static void pdqsort_loop(void *_begin,
                     do {
                         i = k;
                         j = (i << 1) + 2;
-                        memcpy(&tmp, begin + idx(i), size);
+                        memcpy(tmp, begin + idx(i), size);
 
                         while (j <= part_length) {
                             if (j < part_length)
-                                j += (!cmp_func(begin + idx(j),
-                                                begin + idx(j + 1)));
-                            if (!cmp_func(begin + idx(j), &tmp))
+                                j += (cmpint64(begin + idx(j),
+                                               begin + idx(j + 1)) < 0);
+                            if (cmpint64(begin + idx(j), tmp) <= 0)
                                 break;
                             memcpy(begin + idx(i), begin + idx(j), size);
                             i = j;
                             j = (i << 1) + 2;
                         }
 
-                        memcpy(begin + idx(i), &tmp, size);
+                        memcpy(begin + idx(i), tmp, size);
                     } while (k-- > 0);
 
                     /* heapsort */
                     do {
                         i = part_length;
                         j = 0;
-                        memcpy(&tmp, begin + idx(part_length), size);
+                        memcpy(tmp, begin + idx(part_length), size);
 
                         /* Floyd's optimization:
                          * Not checking low[j] <= tmp saves nlog2(n) comparisons
                          */
                         while (j < part_length) {
                             if (j < part_length - 1)
-                                j += (!cmp_func(begin + idx(j),
-                                                begin + idx(j + 1)));
+                                j += (cmpint64(begin + idx(j),
+                                               begin + idx(j + 1)) < 0);
                             memcpy(begin + idx(i), begin + idx(j), size);
                             i = j;
                             j = (i << 1) + 2;
@@ -604,13 +618,13 @@ static void pdqsort_loop(void *_begin,
                          */
                         while (i > 1) {
                             j = (i - 2) >> 1;
-                            if (!cmp_func(&tmp, begin + idx(j)))
+                            if (cmpint64(tmp, begin + idx(j)) <= 0)
                                 break;
                             memcpy(begin + idx(i), begin + idx(j), size);
                             i = j;
                         }
 
-                        memcpy(begin + idx(i), &tmp, size);
+                        memcpy(begin + idx(i), tmp, size);
                     } while (part_length-- > 0);
                     kfree(tmp);
                 }
